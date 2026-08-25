@@ -6,13 +6,13 @@ import pickle
 from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
 
-from logger import Logger
+from src.logger import Logger
 import sys
 import traceback
 
 SHOW_LOG = True
 
-class Model():
+class Model:
     def __init__(self) -> None:
         logger = Logger(SHOW_LOG)
         self.config = configparser.ConfigParser()
