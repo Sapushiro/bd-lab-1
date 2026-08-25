@@ -5,19 +5,20 @@ import sys
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from logger import Logger
+from src.logger import Logger
 
 TEST_SIZE = 0.3
 RANDOM_STATE = 0
 SHOW_LOG = True
 
-class DataMaker():
+class DataMaker:
 
     def __init__(self) -> None:
         logger = Logger(SHOW_LOG)
 
         self.config = configparser.ConfigParser()
         self.log = logger.get_logger(__name__)
+        self.config_path = os.path.join(os.getcwd(), "config.ini")
 
         self.project_path = os.path.join(os.getcwd(), "data")
         os.makedirs(self.project_path, exist_ok=True)
@@ -89,7 +90,7 @@ class DataMaker():
             'y_test': self.test_path[1]
         }
         self.log.info("Train and test data is ready")
-        with open("config.ini", "w") as configfile:
+        with open(self.config_path, "w") as configfile:
             self.config.write(configfile)
 
     def save_splitted_data(self, df: pd.DataFrame, path: str) -> None:
