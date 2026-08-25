@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+from functools import lru_cache
+from typing import Annotated
+
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel, ConfigDict
 
 from src.predict import Predictor
@@ -20,7 +23,9 @@ app = FastAPI(
     description="API for classifying banknotes as authentic or forged"
 )
 
-predictor = Predictor()
+@lru_cache()
+def get_predictor() -> Predictor:
+    return Predictor()
 
 @app.get("/health")
 def health() -> dict[str, str]:
@@ -29,7 +34,10 @@ def health() -> dict[str, str]:
     }
 
 @app.post("/predict", response_model=PredictionResponse)
-def predict(features: BankNoteFeatures) -> PredictionResponse:
+def predict(
+        features: BankNoteFeatures,
+        predictor: Annotated[Predictor, Depends(get_predictor)]
+) -> PredictionResponse:
     predicted_class = predictor.predict(
         features.model_dump()
     )
