@@ -52,8 +52,7 @@ class DataMaker:
         )
 
         self.config["CLEAN DATA"] = {
-            "clean_dataset": self.data_clean_path,
-        }
+            "clean_dataset" : os.path.relpath(self.data_clean_path, start=os.getcwd())}
 
     def get_data(self) -> None:
         dataset = pd.read_csv(self.data_clean_path)
@@ -67,8 +66,8 @@ class DataMaker:
         self.log.info("X and y data is ready")
 
         self.config["DATA"] = {
-            "X_data": self.X_path,
-            "y_data": self.y_path,
+            "X_data": os.path.relpath(self.X_path, start=os.getcwd()),
+            "y_data": os.path.relpath(self.y_path, start=os.getcwd()),
         }
 
     def split_data(self, test_size=TEST_SIZE) -> None:
@@ -84,10 +83,10 @@ class DataMaker:
         self.save_splitted_data(X_test, self.test_path[0])
         self.save_splitted_data(y_test, self.test_path[1])
         self.config["SPLIT DATA"] = {
-            'X_train': self.train_path[0],
-            'y_train': self.train_path[1],
-            'X_test': self.test_path[0],
-            'y_test': self.test_path[1]
+            "X_train": os.path.relpath(self.train_path[0], start=os.getcwd()),
+            "y_train": os.path.relpath(self.train_path[1], start=os.getcwd()),
+            "X_test": os.path.relpath(self.test_path[0], start=os.getcwd()),
+            "y_test": os.path.relpath(self.test_path[1], start=os.getcwd()),
         }
         self.log.info("Train and test data is ready")
         with open(self.config_path, "w") as configfile:

@@ -43,7 +43,10 @@ class TestDataMaker(unittest.TestCase):
         self.assertIn("CLEAN DATA", self.data_maker.config)
         self.assertEqual(
             self.data_maker.config["CLEAN DATA"]["clean_dataset"],
-            self.data_maker.data_clean_path
+            os.path.relpath(
+                self.data_maker.data_clean_path,
+                start=self.temp_dir.name,
+            ),
         )
 
     def test_get_data_splits_features_and_target(self):
@@ -65,11 +68,17 @@ class TestDataMaker(unittest.TestCase):
         self.assertIn("DATA", self.data_maker.config)
         self.assertEqual(
             self.data_maker.config["DATA"]["x_data"],
-            self.data_maker.X_path,
+            os.path.relpath(
+                self.data_maker.X_path,
+                start=self.temp_dir.name,
+            ),
         )
         self.assertEqual(
             self.data_maker.config["DATA"]["y_data"],
-            self.data_maker.y_path,
+            os.path.relpath(
+                self.data_maker.y_path,
+                start=self.temp_dir.name,
+            ),
         )
 
     def test_split_data_creates_train_and_test_files(self):

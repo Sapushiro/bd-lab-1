@@ -48,7 +48,7 @@ class Model:
             y_pred = classifier.predict(self.X_test)
             accuracy = accuracy_score(self.y_test, y_pred)
             self.log.info("Logistic Regression accuracy: %.4f", accuracy)
-        params = {"path": self.model_path}
+        params = {"path": os.path.relpath(self.model_path, start=os.getcwd())}
         self.save_model(classifier, self.model_path, "LOG_REG", params)
 
     def save_model(self, classifier, path: str, name: str, params: dict) -> None:
