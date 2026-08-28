@@ -39,6 +39,9 @@ jobs:
           dvc remote modify --local origin user "${{ secrets.DAGSHUB_USERNAME }}"
           dvc remote modify --local origin password "${{ secrets.DAGSHUB_TOKEN }}"
 
+      - name: Pull data and model with DVC
+        run: dvc pull
+
       - name: Build Docker image
         run: |
           docker build \
